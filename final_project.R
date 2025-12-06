@@ -106,6 +106,23 @@ full_main <- lm(TransfBetaPlasma ~ Age + Quetelet + Calories + Fat + Fiber +
                 data = dat)
 summary(full_main)
 
+resid_std <- rstandard(full_main)
+
+png("hw_final_project_qq01.png",
+    width = 800, height = 600, units = "px")
+
+qqnorm(resid_std, main = "Normal Q-Q Plot of Standardized Residuals")
+qqline(resid_std, col = "red")
+dev.off() #Close the graphics device.
+
+png("hw_final_project_cooks01.png",
+    width = 800, height = 600, units = "px")
+plot(full_main, 4)
+dev.off() #Close the graphics device.
+
+#Remove the outlier with a large Cook's distance:
+dat <- dat[-257, ]
+
 fit_0 <- lm(TransfBetaPlasma ~ 1, data = dat)
 step(fit_0, TransfBetaPlasma ~  Age + Quetelet + Calories + Fiber +
                   Alcohol + Cholesterol + BetaDiet +
